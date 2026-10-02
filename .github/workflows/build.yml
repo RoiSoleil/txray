@@ -29,13 +29,28 @@ jobs:
            restore-keys: |
              ${{ runner.os }}-maven-
       -  name: Build
-         run: mvn -B clean install
+         # The end-to-end tests drive a real workbench with SWTBot: they need a display.
+         run: |
+            set -o pipefail
+            xvfb-run -a mvn -B clean install 2>&1 | tee build.log
+      -  name: Report the failure
+         # The failure as annotations of the run: readable with the REST API of GitHub.
+         if: failure()
+         run: |
+            annotate() { python3 -c 'import sys,urllib.parse; d=sys.stdin.read()[-60000:]; print("::error title='"$1"'::" + d.replace("%","%25").replace("\r","").replace("\n","%0A"))'; }
+            grep -E "\[ERROR\]|Tests run:|FAIL" build.log | head -150 | annotate "Maven errors"
+            for f in tests/*/target/surefire-reports/*.txt; do [ -f "$f" ] && cat "$f" | annotate "$(basename $f)"; done
+            for f in tests/*/target/work/data/.metadata/.log; do [ -f "$f" ] && tail -c 50000 "$f" | annotate "Eclipse log"; done
+            true
       -  name: Upload the test reports
          if: failure()
          uses: actions/upload-artifact@v7
          with:
-            name: surefire-reports
-            path: tests/*/target/surefire-reports
+            name: test-reports
+            path: |
+               tests/*/target/surefire-reports
+               tests/*/target/screenshots
+               tests/*/target/work/data/.metadata/.log
       -  name: Release
          if: github.event_name == 'push'
          env:

@@ -13,6 +13,7 @@
 		<module>bundles/org.eclipse.txray.jdbc</module>
 		<module>bundles/org.eclipse.txray</module>
 		<module>tests/org.eclipse.txray.jdbc.tests</module>
+		<module>tests/org.eclipse.txray.tests</module>
 		<module>features/org.eclipse.txray</module>
 		<module>update-site/org.eclipse.txray</module>
 	</modules>

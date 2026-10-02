@@ -10,6 +10,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<eclipse-repo.url>https://download.eclipse.org/releases/latest</eclipse-repo.url>
 		<dbeaver-repo.url>https://dbeaver.io/update/latest/</dbeaver-repo.url>
+		<swtbot-repo.url>https://download.eclipse.org/technology/swtbot/releases/latest/</swtbot-repo.url>
 	</properties>
 	<repositories>
 		<repository>
@@ -20,6 +21,11 @@
 		<repository>
 			<id>dbeaver</id>
 			<url>${dbeaver-repo.url}</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>swtbot</id>
+			<url>${swtbot-repo.url}</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>

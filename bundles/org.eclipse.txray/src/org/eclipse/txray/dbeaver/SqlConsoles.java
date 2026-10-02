@@ -20,6 +20,7 @@ import org.jkiss.dbeaver.model.DBPDataSourceContainer;
 import org.jkiss.dbeaver.model.app.DBPDataSourceRegistry;
 import org.jkiss.dbeaver.model.app.DBPPlatform;
 import org.jkiss.dbeaver.model.app.DBPProject;
+import org.jkiss.dbeaver.model.app.DBPWorkspace;
 import org.jkiss.dbeaver.model.connection.DBPConnectionConfiguration;
 import org.jkiss.dbeaver.model.connection.DBPDataSourceProviderDescriptor;
 import org.jkiss.dbeaver.model.connection.DBPDriver;
@@ -68,10 +69,7 @@ public final class SqlConsoles {
         if (driver == null) {
             throw new DBException("The TxRay driver is not registered in DBeaver");
         }
-        DBPProject project = platform.getWorkspace().getActiveProject();
-        if (project == null) {
-            throw new DBException("No active DBeaver project");
-        }
+        DBPProject project = project(platform);
         DBPDataSourceRegistry registry = project.getDataSourceRegistry();
         DBPConnectionConfiguration configuration = new DBPConnectionConfiguration();
         configuration.setConfigurationType(DBPDriverConfigurationType.URL);
@@ -82,6 +80,20 @@ public final class SqlConsoles {
         container.setSavePassword(true);
         registry.addDataSource(container);
         return container;
+    }
+
+    /** The active DBeaver project, else the first one, else a new "TxRay" project. */
+    private static DBPProject project(DBPPlatform platform) throws DBException {
+        DBPWorkspace workspace = platform.getWorkspace();
+        DBPProject project = workspace.getActiveProject();
+        if (project == null && !workspace.getProjects().isEmpty()) {
+            project = workspace.getProjects().get(0);
+        }
+        if (project == null) {
+            project = workspace.createProject("TxRay", "Connections of threads suspended in the debugger");
+        }
+        project.ensureOpen();
+        return project;
     }
 
     private static String header(Binding binding) {

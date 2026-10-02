@@ -89,6 +89,11 @@ work with Tycho). The target platform is the latest Eclipse release plus the DBe
 mvn clean install   # update site in update-site/org.eclipse.txray/target/repository
 ```
 
+`tests/org.eclipse.txray.tests` is an end-to-end SWTBot test. It starts a Java application with an H2 transaction in
+progress and debugs it. Then, in a real workbench, it chooses *TxRay > Open SQL Console on Thread Connection* on the
+suspended thread, runs SQL in the DBeaver console and checks the result grid and the application's transaction. A
+window opens on the current display (use `xvfb-run` on a server).
+
 The project has two bundles:
 
 - `bundles/org.eclipse.txray.jdbc`: the JDBC driver, with no dependency. It is tested on its own.
