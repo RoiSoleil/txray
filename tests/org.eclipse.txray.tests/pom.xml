@@ -53,7 +53,7 @@
 					<providerHint>junit5</providerHint>
 					<showEclipseLog>true</showEclipseLog>
 					<application>org.eclipse.ui.ide.workbench</application>
-					<argLine>-Dtxray.e2e.classpath=${project.build.outputDirectory}${path.separator}${e2e.dir}/h2.jar -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -Dorg.eclipse.swtbot.search.timeout=20000</argLine>
+					<argLine>${tycho.testArgLine} -Dtxray.e2e.classpath=${project.build.outputDirectory}${path.separator}${e2e.dir}/h2.jar -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -Dorg.eclipse.swtbot.search.timeout=20000</argLine>
 					<bundleStartLevel>
 						<bundle>
 							<id>org.apache.felix.scr</id>

@@ -1,6 +1,7 @@
 # <img src="docs/logo.png" width="40" align="top" alt=""> TxRay : look into the live transaction of a debugged Java application with DBeaver.
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/RoiSoleil/txray/build.yml)](https://github.com/RoiSoleil/txray/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/RoiSoleil/txray/branch/main/graph/badge.svg)](https://codecov.io/gh/RoiSoleil/txray)
 [![GitHub](https://img.shields.io/github/license/RoiSoleil/txray)](LICENSE)
 
 The application is stopped on a breakpoint, in the middle of a transaction: rows inserted, updated or locked, and
@@ -93,6 +94,9 @@ mvn clean install   # update site in update-site/org.eclipse.txray/target/reposi
 progress and debugs it. Then, in a real workbench, it chooses *TxRay > Open SQL Console on Thread Connection* on the
 suspended thread, runs SQL in the DBeaver console and checks the result grid and the application's transaction. A
 window opens on the current display (use `xvfb-run` on a server).
+
+The coverage of all the tests, the end-to-end test included, is aggregated by `tests/org.eclipse.txray.coverage` in
+`target/site/jacoco-aggregate` and published on [Codecov](https://codecov.io/gh/RoiSoleil/txray).
 
 The project has two bundles:
 

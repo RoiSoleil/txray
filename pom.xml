@@ -16,5 +16,6 @@
 		<module>tests/org.eclipse.txray.tests</module>
 		<module>features/org.eclipse.txray</module>
 		<module>update-site/org.eclipse.txray</module>
+		<module>tests/org.eclipse.txray.coverage</module>
 	</modules>
 </project>
