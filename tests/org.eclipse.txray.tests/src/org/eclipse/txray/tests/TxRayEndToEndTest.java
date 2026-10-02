@@ -313,6 +313,46 @@ class TxRayEndToEndTest {
         return null;
     }
 
+    /** The open windows and their texts, to understand a failure. */
+    private static String windows() {
+        return UIThreadRunnable.syncExec(() -> {
+            StringBuilder sb = new StringBuilder();
+            for (org.eclipse.swt.widgets.Shell shell : org.eclipse.swt.widgets.Display.getDefault().getShells()) {
+                if (!shell.isVisible()) {
+                    continue;
+                }
+                sb.append("- ").append(shell.getText()).append('\n');
+                if (shell.getParent() != null) {
+                    texts(shell, sb);
+                }
+            }
+            return sb.toString();
+        });
+    }
+
+    private static void texts(org.eclipse.swt.widgets.Control control, StringBuilder sb) {
+        String text = null;
+        if (control instanceof org.eclipse.swt.widgets.Label l) {
+            text = l.getText();
+        } else if (control instanceof org.eclipse.swt.widgets.Text t) {
+            text = t.getText();
+        } else if (control instanceof org.eclipse.swt.widgets.Button b) {
+            text = "[" + b.getText() + "]";
+        } else if (control instanceof org.eclipse.swt.widgets.Table t) {
+            for (org.eclipse.swt.widgets.TableItem item : t.getItems()) {
+                sb.append("    * ").append(item.getText()).append('\n');
+            }
+        }
+        if (text != null && !text.isBlank()) {
+            sb.append("    ").append(text).append('\n');
+        }
+        if (control instanceof org.eclipse.swt.widgets.Composite c) {
+            for (org.eclipse.swt.widgets.Control child : c.getChildren()) {
+                texts(child, sb);
+            }
+        }
+    }
+
     private <T> T waitFor(String what, Supplier<T> probe) {
         Object[] result = new Object[1];
         bot.waitUntil(new DefaultCondition() {
@@ -328,7 +368,8 @@ class TxRayEndToEndTest {
 
             @Override
             public String getFailureMessage() {
-                return "Timed out waiting for " + what + "\nApplication output:\n" + output();
+                return "Timed out waiting for " + what + "\nApplication output:\n" + output() + "\nWindows:\n"
+                        + windows();
             }
         }, 60_000);
         @SuppressWarnings("unchecked")

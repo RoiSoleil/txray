@@ -40,7 +40,17 @@ jobs:
             annotate() { python3 -c 'import sys,urllib.parse; d=sys.stdin.read()[-60000:]; print("::error title='"$1"'::" + d.replace("%","%25").replace("\r","").replace("\n","%0A"))'; }
             grep -E "\[ERROR\]|Tests run:|FAIL" build.log | head -150 | annotate "Maven errors"
             for f in tests/*/target/surefire-reports/*.txt; do [ -f "$f" ] && cat "$f" | annotate "$(basename $f)"; done
-            for f in tests/*/target/work/data/.metadata/.log; do [ -f "$f" ] && tail -c 50000 "$f" | annotate "Eclipse log"; done
+            for f in tests/*/target/work/data/.metadata/.log; do
+               [ -f "$f" ] || continue
+               # the errors of the Eclipse log, one annotation per entry (annotations are short)
+               python3 - "$f" <<'PY'
+            import re, sys
+            entries = re.split(r"\n(?=!ENTRY )", open(sys.argv[1]).read())
+            picked = [e for e in entries if e.startswith("!ENTRY") and (" 4 " in e.split("\n")[0] or "txray" in e.lower())]
+            for e in picked[-6:]:
+                print("::error title=Eclipse log::" + e[:3500].replace("%", "%25").replace("\r", "").replace("\n", "%0A"))
+            PY
+            done
             true
       -  name: Upload the test reports
          if: failure()
