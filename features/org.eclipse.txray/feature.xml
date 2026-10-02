@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.txray.feature"
+      label="TxRay"
+      version="1.0.0.qualifier"
+      provider-name="RoiSoleil">
+
+   <description url="https://github.com/RoiSoleil/txray">
+      Query the live JDBC transaction of a thread suspended in the Eclipse debugger from the DBeaver SQL editor of the same Eclipse.
+   </description>
+
+   <license url="http://www.eclipse.org/legal/epl-v20.html">
+      Eclipse Public License, v2.0
+   </license>
+
+   <requires>
+      <import plugin="org.jkiss.dbeaver.ui.editors.sql"/>
+      <import plugin="org.jkiss.dbeaver.ext.generic"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.txray"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.txray.jdbc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

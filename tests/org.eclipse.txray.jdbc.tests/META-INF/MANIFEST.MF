@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TxRay JDBC Driver Tests
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-SymbolicName: org.eclipse.txray.jdbc.tests
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: org.eclipse.txray.jdbc
+Require-Bundle: junit-jupiter-api;bundle-version="[5.9.0,6.0.0)"
+Automatic-Module-Name: org.eclipse.txray.jdbc.tests
+Bundle-Vendor: RoiSoleil

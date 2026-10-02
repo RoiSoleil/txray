@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="org.eclipse.ui.commands">
+      <category id="org.eclipse.txray.category" name="%category.name"/>
+      <command id="org.eclipse.txray.expose" categoryId="org.eclipse.txray.category"
+            name="%command.expose.name" description="%command.expose.description"/>
+      <command id="org.eclipse.txray.newConsole" categoryId="org.eclipse.txray.category"
+            name="%command.newConsole.name" description="%command.newConsole.description"/>
+      <command id="org.eclipse.txray.release" categoryId="org.eclipse.txray.category"
+            name="%command.release.name" description="%command.release.description"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.handlers">
+      <handler commandId="org.eclipse.txray.expose" class="org.eclipse.txray.ui.ExposeHandler"/>
+      <handler commandId="org.eclipse.txray.newConsole" class="org.eclipse.txray.ui.NewConsoleHandler"/>
+      <handler commandId="org.eclipse.txray.release" class="org.eclipse.txray.ui.ReleaseHandler"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.commandImages">
+      <image commandId="org.eclipse.txray.expose" icon="icons/txray.png"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <!-- Debug view: a thread or a stack frame -->
+      <menuContribution locationURI="popup:org.eclipse.debug.ui.DebugView?after=additions">
+         <menu id="org.eclipse.txray.menu" label="%menu.label" icon="icons/txray.png">
+            <visibleWhen checkEnabled="false">
+               <with variable="activeMenuSelection">
+                  <count value="1"/>
+                  <iterate ifEmpty="false">
+                     <or>
+                        <instanceof value="org.eclipse.jdt.debug.core.IJavaThread"/>
+                        <instanceof value="org.eclipse.jdt.debug.core.IJavaStackFrame"/>
+                     </or>
+                  </iterate>
+               </with>
+            </visibleWhen>
+            <command commandId="org.eclipse.txray.expose" style="push"/>
+            <command commandId="org.eclipse.txray.newConsole" style="push"/>
+            <command commandId="org.eclipse.txray.release" style="push"/>
+         </menu>
+      </menuContribution>
+      <!-- Variables view: a Connection, a Session, an EntityManager... -->
+      <menuContribution locationURI="popup:org.eclipse.debug.ui.VariableView?after=additions">
+         <command commandId="org.eclipse.txray.expose" label="%command.exposeValue.name" style="push">
+            <visibleWhen checkEnabled="false">
+               <with variable="activeMenuSelection">
+                  <count value="1"/>
+                  <iterate ifEmpty="false">
+                     <instanceof value="org.eclipse.jdt.debug.core.IJavaVariable"/>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <!-- Expressions view: a watch expression -->
+      <menuContribution locationURI="popup:org.eclipse.debug.ui.ExpressionView?after=additions">
+         <command commandId="org.eclipse.txray.expose" label="%command.exposeValue.name" style="push">
+            <visibleWhen checkEnabled="false">
+               <with variable="activeMenuSelection">
+                  <count value="1"/>
+                  <iterate ifEmpty="false">
+                     <or>
+                        <instanceof value="org.eclipse.debug.core.model.IExpression"/>
+                        <instanceof value="org.eclipse.jdt.debug.core.IJavaVariable"/>
+                     </or>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+
+   <extension point="org.eclipse.ui.preferencePages">
+      <page id="org.eclipse.txray.preferences" name="%preferencePage.name"
+            class="org.eclipse.txray.ui.TxRayPreferencePage"/>
+   </extension>
+
+   <extension point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.eclipse.txray.ui.Preferences"/>
+   </extension>
+
+   <!--
+      The TxRay driver in DBeaver. DBeaver loads a driver with the class loader of its provider:
+      the provider of this bundle makes it load the TxRay driver of this bundle, without jar.
+   -->
+   <extension point="org.jkiss.dbeaver.dataSourceProvider">
+      <datasource
+            class="org.eclipse.txray.dbeaver.TxRayDataSourceProvider"
+            description="%datasource.description"
+            id="txray"
+            parent="generic"
+            label="TxRay"
+            icon="icons/txray.png"
+            dialect="generic">
+         <drivers managable="false">
+            <driver
+                  id="txray"
+                  label="%driver.label"
+                  class="org.eclipse.txray.jdbc.TxRayDriver"
+                  sampleURL="jdbc:txray:{database}"
+                  description="%driver.description"
+                  icon="icons/txray.png"
+                  anonymous="true"
+                  supportsDriverProperties="false">
+               <parameter name="supports-references" value="false"/>
+               <parameter name="supports-indexes" value="false"/>
+               <parameter name="supports-stored-code" value="false"/>
+               <parameter name="supports-views" value="false"/>
+               <parameter name="supports-table-constraints" value="false"/>
+               <parameter name="supports-limits" value="false"/>
+               <parameter name="supports-multiple-results" value="false"/>
+               <parameter name="supports-select-count" value="false"/>
+               <parameter name="supports-struct-cache" value="false"/>
+               <parameter name="omit-catalog" value="true"/>
+               <parameter name="omit-schema" value="true"/>
+               <parameter name="omit-type-cache" value="true"/>
+            </driver>
+         </drivers>
+      </datasource>
+   </extension>
+</plugin>

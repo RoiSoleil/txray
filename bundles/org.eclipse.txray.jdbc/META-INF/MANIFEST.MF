@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TxRay JDBC Driver (in-process)
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-SymbolicName: org.eclipse.txray.jdbc
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.eclipse.txray.jdbc,
+ org.eclipse.txray.jdbc.backend
+Automatic-Module-Name: org.eclipse.txray.jdbc
+Bundle-Vendor: RoiSoleil
