@@ -49,6 +49,9 @@
 					<!-- SWTBot drives a real workbench: it needs a display (xvfb-run on a server). -->
 					<useUIHarness>true</useUIHarness>
 					<useUIThread>false</useUIThread>
+					<!-- SWTBot brings JUnit 4 too: the tests are JUnit 5 -->
+					<providerHint>junit5</providerHint>
+					<showEclipseLog>true</showEclipseLog>
 					<application>org.eclipse.ui.ide.workbench</application>
 					<argLine>-Dtxray.e2e.classpath=${project.build.outputDirectory}${path.separator}${e2e.dir}/h2.jar -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -Dorg.eclipse.swtbot.search.timeout=20000</argLine>
 					<bundleStartLevel>
