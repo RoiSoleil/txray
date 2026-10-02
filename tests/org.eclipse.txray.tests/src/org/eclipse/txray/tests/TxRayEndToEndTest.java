@@ -125,7 +125,7 @@ class TxRayEndToEndTest {
         // a DBeaver SQL console opens on the connection of the thread
         SWTBotEditor console = waitFor("the TxRay SQL console", () -> {
             for (SWTBotEditor e : bot.editors()) {
-                if (e.getTitle().startsWith("TxRay #")) {
+                if (e.getTitle().contains("TxRay #")) {
                     return e;
                 }
             }
