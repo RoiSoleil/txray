@@ -243,7 +243,8 @@ class TxRayEndToEndTest {
 
     /** Types the statement in the console and runs it like Ctrl+Enter. */
     private void run(SQLEditor editor, String sql) {
-        UIThreadRunnable.syncExec(() -> {
+        // asynchronous, as a key press: a dialog opened by the execution must not block the test
+        UIThreadRunnable.asyncExec(() -> {
             editor.getSite().getPage().activate(editor);
             IDocument doc = document(editor);
             doc.set(sql);
