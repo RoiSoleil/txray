@@ -256,6 +256,16 @@ class TxRayEndToEndTest {
                 throw new IllegalStateException("Cannot run " + sql, e);
             }
         });
+        // DBeaver runs one statement at a time per console: wait for the end of this one
+        long start = System.currentTimeMillis();
+        while (!running(editor) && System.currentTimeMillis() - start < 5000) {
+            bot.sleep(50);
+        }
+        waitFor("the end of " + sql, () -> running(editor) ? null : Boolean.TRUE);
+    }
+
+    private static boolean running(SQLEditor editor) {
+        return UIThreadRunnable.syncExec(editor::isActiveQueryRunning);
     }
 
     private interface RowsCondition {
