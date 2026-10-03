@@ -15,6 +15,7 @@ Require-Bundle: org.eclipse.ui,
  org.jkiss.dbeaver.model,
  org.jkiss.dbeaver.ext.generic,
  org.jkiss.dbeaver.ui.editors.sql,
+ org.jkiss.dbeaver.ui.app.eclipse,
  org.eclipse.txray.jdbc;bundle-version="[1.0.0,2.0.0)"
 Automatic-Module-Name: org.eclipse.txray
 Bundle-ActivationPolicy: lazy

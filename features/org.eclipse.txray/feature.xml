@@ -14,6 +14,8 @@
    </license>
 
    <requires>
+      <!-- DBeaver for Eclipse as a whole: without its application, the DBeaver plugins do not work -->
+      <import feature="org.jkiss.dbeaver.ide.feature"/>
       <import plugin="org.jkiss.dbeaver.ui.editors.sql"/>
       <import plugin="org.jkiss.dbeaver.ext.generic"/>
    </requires>
